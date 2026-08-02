@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-07-31 01:55:13.244576",
+ "description": "Credentials and schedule for the Qonto transaction sync.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "section_credentials",
+  "api_login",
+  "api_secret_key",
+  "column_break_credentials",
+  "sandbox_mode",
+  "staging_token",
+  "section_accounts",
+  "company",
+  "section_sync",
+  "sync_start_date",
+  "section_help",
+  "help_html"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "description": "When switched on, new Qonto transactions are fetched every hour. Leave it off while you are still setting things up, and switch it off any time you want to pause imports - your credentials stay saved.",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Import transactions automatically"
+  },
+  {
+   "fieldname": "section_credentials",
+   "fieldtype": "Section Break",
+   "label": "Connection to Qonto"
+  },
+  {
+   "description": "In the Qonto app: Settings &rarr; Integrations and Partnerships &rarr; API key. Qonto shows a login and a secret key - copy both into the fields here.",
+   "fieldname": "api_login",
+   "fieldtype": "Data",
+   "label": "API Login"
+  },
+  {
+   "description": "Stored encrypted. It is not shown again after saving and never appears in logs.",
+   "fieldname": "api_secret_key",
+   "fieldtype": "Password",
+   "label": "API Secret Key"
+  },
+  {
+   "fieldname": "column_break_credentials",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "For trying things out against Qonto's sandbox instead of your real account. Leave this off for normal use.",
+   "fieldname": "sandbox_mode",
+   "fieldtype": "Check",
+   "label": "Use Qonto's test environment"
+  },
+  {
+   "depends_on": "eval:doc.sandbox_mode",
+   "description": "Only needed for the sandbox. You get it from Qonto's developer portal.",
+   "fieldname": "staging_token",
+   "fieldtype": "Password",
+   "label": "Test environment token"
+  },
+  {
+   "fieldname": "section_sync",
+   "fieldtype": "Section Break",
+   "label": "Import"
+  },
+  {
+   "description": "The very first import starts at this date. After that, each run continues where the previous one stopped. Choose the beginning of the period you still need to reconcile.",
+   "fieldname": "sync_start_date",
+   "fieldtype": "Date",
+   "label": "Import transactions from"
+  },
+  {
+   "description": "Only used when linking. If a Qonto account has no bank account in ERPNext yet, a new one is created for this company. Bank accounts that already exist keep the company they have.",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company for new bank accounts",
+   "options": "Company"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_help",
+   "fieldtype": "Section Break",
+   "label": "Help"
+  },
+  {
+   "fieldname": "help_html",
+   "fieldtype": "HTML",
+   "options": "<div class=\"text-muted small\">\n\t<p>\n\t\t<a href=\"https://github.com/itsupport-onl/qonto_banking#setup\" target=\"_blank\" rel=\"noopener\">Setup guide</a> &middot;\n\t\t<a href=\"https://github.com/itsupport-onl/qonto_banking#how-the-import-works\" target=\"_blank\" rel=\"noopener\">How the import works</a> &middot;\n\t\t<a href=\"https://github.com/itsupport-onl/qonto_banking#when-something-looks-wrong\" target=\"_blank\" rel=\"noopener\">Troubleshooting</a> &middot;\n\t\t<a href=\"https://github.com/itsupport-onl/qonto_banking/issues\" target=\"_blank\" rel=\"noopener\">Report an issue</a>\n\t</p>\n\t<p>\n\t\tThis app imports transactions only &mdash; reconciliation stays in the\n\t\t<a href=\"/app/bank-reconciliation-tool\">Bank Reconciliation Tool</a>.\n\t</p>\n\t<p>\n\t\tInstallation, hosting or custom development:\n\t\t<a href=\"https://itsupport.online/\" target=\"_blank\" rel=\"noopener\">itsupport.online</a>\n\t</p>\n</div>"
+  },
+  {
+   "description": "Use the <b>Link Bank Accounts</b> button at the top to match your Qonto accounts with bank accounts in ERPNext.",
+   "fieldname": "section_accounts",
+   "fieldtype": "Section Break",
+   "label": "Bank accounts"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-30 17:51:04.707953",
+ "modified_by": "Administrator",
+ "module": "Qonto Banking",
+ "name": "Qonto Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

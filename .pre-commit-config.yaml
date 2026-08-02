@@ -1,0 +1,36 @@
+exclude: 'node_modules|.git'
+default_stages: [pre-commit]
+fail_fast: false
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '.*\.(json|txt|csv|md|svg)$'
+      - id: end-of-file-fixer
+        exclude: '.*\.(json|svg)$'
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      - id: check-case-conflict
+      - id: check-vcs-permalinks
+      - id: debug-statements
+      # Secret hygiene: a committed key is a leaked key, even in a private repo.
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+ci:
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

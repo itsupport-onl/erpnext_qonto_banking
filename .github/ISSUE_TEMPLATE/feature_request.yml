@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Which concrete accounting/reconciliation problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Which roadmap phase does this belong to?
+      description: See README.md — the app never books anything itself.
+      options:
+        - Phase 1 — transaction sync
+        - Phase 2 — attachments/receipts
+        - Phase 3 — webhooks
+        - Phase 4 — auto-matching/labels
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

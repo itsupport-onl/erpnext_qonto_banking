@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Server tests (frappe ${{ matrix.frappe-branch }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+
+    # Python and Node belong in the matrix because the two versions do not
+    # overlap: frappe v15 wants python >=3.10,<3.15 and node >=18, while v16
+    # narrows that to python >=3.14,<3.15 and node >=24. One shared toolchain
+    # would fail on one branch or the other.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - frappe-branch: version-15
+            python-version: '3.11'
+            node-version: '18'
+            runner: ubuntu-22.04
+          - frappe-branch: version-16
+            python-version: '3.14'
+            node-version: '24'
+            runner: ubuntu-24.04
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          check-latest: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends mariadb-client
+          npm install -g yarn
+
+      - name: Configure MariaDB
+        run: |
+          mysql --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
+          mysql --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
+
+      - name: Install bench
+        run: pip install frappe-bench
+
+      - name: Init bench with frappe and erpnext
+        run: |
+          bench init --skip-redis-config-generation --frappe-branch ${{ matrix.frappe-branch }} ~/frappe-bench
+          cd ~/frappe-bench
+          bench set-config -g db_host 127.0.0.1
+          bench set-config -g redis_cache "redis://127.0.0.1:6379"
+          bench set-config -g redis_queue "redis://127.0.0.1:6379"
+          bench set-config -g redis_socketio "redis://127.0.0.1:6379"
+          bench get-app --branch ${{ matrix.frappe-branch }} erpnext
+
+      - name: Install qonto_banking from this checkout
+        run: |
+          cd ~/frappe-bench
+          bench get-app qonto_banking "$GITHUB_WORKSPACE"
+
+      - name: Create test site
+        run: |
+          cd ~/frappe-bench
+          bench new-site test_site \
+            --db-root-password root \
+            --admin-password admin \
+            --no-mariadb-socket
+          bench --site test_site install-app erpnext qonto_banking
+          bench --site test_site set-config allow_tests true
+          bench --site test_site set-config developer_mode 1
+
+      - name: Run tests
+        run: |
+          cd ~/frappe-bench
+          bench --site test_site run-tests --app qonto_banking

@@ -1,0 +1,137 @@
+{
+ "actions": [],
+ "autoname": "format:QSL-{YYYY}-{MM}{DD}-{#####}",
+ "creation": "2026-07-31 01:55:13.795536",
+ "description": "One entry per sync run and bank account. Written by the sync worker.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "bank_account",
+  "status",
+  "column_break_head",
+  "run_at",
+  "from_date",
+  "section_counts",
+  "new_transactions",
+  "skipped_existing",
+  "column_break_counts",
+  "errors",
+  "section_details",
+  "details"
+ ],
+ "fields": [
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Bank Account",
+   "options": "Bank Account",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Success\nPartial\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_head",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "run_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Run At",
+   "read_only": 1
+  },
+  {
+   "description": "Lower bound sent to the Qonto API for this run.",
+   "fieldname": "from_date",
+   "fieldtype": "Datetime",
+   "label": "Fetched From",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_counts",
+   "fieldtype": "Section Break",
+   "label": "Result"
+  },
+  {
+   "fieldname": "new_transactions",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "New Transactions",
+   "read_only": 1
+  },
+  {
+   "fieldname": "skipped_existing",
+   "fieldtype": "Int",
+   "label": "Skipped (already imported)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_counts",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "errors",
+   "fieldtype": "Int",
+   "label": "Errors",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "description": "First error messages of the run. Never contains credentials.",
+   "fieldname": "details",
+   "fieldtype": "Small Text",
+   "label": "Details",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-07-31 02:00:17.476664",
+ "modified_by": "Administrator",
+ "module": "Qonto Banking",
+ "name": "Qonto Sync Log",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1
+  }
+ ],
+ "read_only": 1,
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "run_at",
+ "sort_order": "DESC",
+ "states": []
+}

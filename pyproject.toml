@@ -1,0 +1,64 @@
+[project]
+name = "qonto_banking"
+authors = [
+	{ name = "itsupport.online", email = "tickets@itsupport.onl" },
+]
+description = "Sync Qonto Business bank transactions into ERPNext Bank Transactions"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+license = { file = "license.txt" }
+keywords = ["frappe", "erpnext", "qonto", "banking", "bank-reconciliation"]
+classifiers = [
+	"Framework :: Frappe",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: GNU Affero General Public License v3",
+	"Programming Language :: Python :: 3",
+]
+dependencies = [
+	# Nothing beyond what Frappe already ships (requests is part of Frappe).
+]
+
+[project.urls]
+Homepage = "https://github.com/itsupport-onl/erpnext_qonto_banking"
+Support = "https://itsupport.online/"
+Source = "https://github.com/itsupport-onl/erpnext_qonto_banking"
+Issues = "https://github.com/itsupport-onl/erpnext_qonto_banking/issues"
+Changelog = "https://github.com/itsupport-onl/erpnext_qonto_banking/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.bench.frappe-dependencies]
+frappe = ">=15.0.0,<17.0.0"
+erpnext = ">=15.0.0,<17.0.0"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "UP", "B", "RUF"]
+ignore = [
+	"B017", # assertRaises(Exception) - should be more specific
+	"B018", # useless expression, not assigned to anything
+	"B023", # function doesn't bind loop variable - will have last iteration's value
+	"B904", # raise inside except without from
+	"E101", # indentation contains mixed spaces and tabs
+	"E402", # module level import not at top of file
+	"E501", # line too long
+	"E741", # ambiguous variable name
+	"F401", # "unused" imports
+	"F403", # can't detect undefined names from * import
+	"F405", # can't detect undefined names from * import
+	"F722", # syntax error in forward type annotation
+	"W191", # indentation contains tabs
+	"RUF001", # string contains ambiguous unicode character
+]
+typing-modules = ["frappe.types.DF"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+docstring-code-format = true

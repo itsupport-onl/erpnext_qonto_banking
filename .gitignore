@@ -1,0 +1,65 @@
+# --- Secrets: never commit credentials --------------------------------------
+# Qonto API login/secret, staging tokens and site credentials belong into the
+# Frappe site (encrypted Password fields / site_config.json), never into git.
+.env
+.env.*
+*.env
+site_config.json
+common_site_config.json
+secrets.*
+credentials.*
+*.pem
+*.key
+*.p12
+*.pfx
+*_rsa
+*_dsa
+*_ed25519
+.netrc
+.qonto_credentials
+# ----------------------------------------------------------------------------
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# Tooling / caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Frappe / bench
+sites/
+logs/
+*.log
+node_modules/
+qonto_banking/public/dist/
+qonto_banking/docs/current
+
+# Editors / OS / tooling
+.claude/
+CLAUDE.md
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local scratch
+/tmp/
+scratch/
+*.local
