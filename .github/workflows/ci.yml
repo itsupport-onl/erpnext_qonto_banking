@@ -30,7 +30,7 @@ jobs:
           - frappe-branch: version-15
             python-version: '3.11'
             node-version: '18'
-            runner: ubuntu-22.04
+            runner: ubuntu-24.04
           - frappe-branch: version-16
             python-version: '3.14'
             node-version: '24'
